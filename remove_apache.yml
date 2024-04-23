@@ -4,17 +4,21 @@
   become: true
   tasks:
 
-    - name: Update Repository Index
+    - name: Update Repository Index; Remove apache2 package; Add php support for Apache
       apt:
         update_cache: yes
-
-    - name: Remove apache2 package
-      apt:
-        name: apache2
+        name: 
+          - apache2
+          - libapache2-mod-php
         state: absent
-
-    - name: Add php support for Apache
-      apt:
-        name: libapache2-mod-php
+      when: ansible_distribution == "Ubuntu"
+    - name: Update Repository Index; Remove apache2 package; Add php support for Apache
+      dnf:
+        update_cache: yes
+        name: 
+          - httpd
+          - php
         state: absent
+      when: ansible_distribution == "OracleLinux"
+   
 
